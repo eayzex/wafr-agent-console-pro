@@ -106,5 +106,4 @@ MIT License.
 
 ---
 
-Made with ❤️ for WafR by youssef
-```
+Made by youssef
