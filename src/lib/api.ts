@@ -1,4 +1,3 @@
-
 import { User, Transaction, AuthUser } from './types';
 
 // Mock API endpoints to simulate backend
@@ -101,11 +100,38 @@ export const authAPI = {
     }
     throw new Error('Invalid email or password');
   },
+  
+  signup: async (name: string, email: string, password: string): Promise<AuthUser> => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Check if email is already used (for demo purposes)
+    if (email === 'agent@wafr.com') {
+      throw new Error('Email already in use');
+    }
+    
+    // For demo purposes, always succeed with new accounts
+    return {
+      id: `agent-${Date.now()}`,
+      name,
+      email,
+      role: 'agent',
+      token: 'mock-jwt-token',
+    };
+  },
+  
   logout: async (): Promise<void> => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 300));
     return;
   },
+  
+  resetPassword: async (email: string): Promise<void> => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1200));
+    // For demo purposes, always succeed
+    return;
+  }
 };
 
 // User API

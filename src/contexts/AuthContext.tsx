@@ -8,6 +8,7 @@ type AuthContextType = {
   user: AuthUser | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
 };
 
@@ -54,6 +55,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const signup = async (name: string, email: string, password: string) => {
+    try {
+      setIsLoading(true);
+      const userData = await authAPI.signup(name, email, password);
+      setUser(userData);
+      localStorage.setItem('wafr_user', JSON.stringify(userData));
+      toast({
+        title: 'Account created',
+        description: `Welcome to WafR, ${userData.name}!`,
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Registration failed',
+        description: error.message || 'Failed to create account',
+        variant: 'destructive',
+      });
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const logout = async () => {
     try {
       await authAPI.logout();
@@ -69,7 +92,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );

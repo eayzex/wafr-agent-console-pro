@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Navigate, Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,10 +8,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff } from 'lucide-react';
 
-const LoginPage = () => {
-  const { user, login, isLoading } = useAuth();
-  const [email, setEmail] = useState('agent@wafr.com');
-  const [password, setPassword] = useState('password');
+const SignupPage = () => {
+  const { user, signup, isLoading } = useAuth();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -23,10 +25,15 @@ const LoginPage = () => {
     e.preventDefault();
     setError('');
     
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
     try {
-      await login(email, password);
-    } catch (err) {
-      setError('Invalid email or password');
+      await signup(name, email, password);
+    } catch (err: any) {
+      setError(err.message || 'Failed to create account');
     }
   };
 
@@ -40,9 +47,9 @@ const LoginPage = () => {
                 <span className="text-white font-bold text-3xl">W</span>
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold text-wafr-purple-dark">WafR Agent Console</CardTitle>
+            <CardTitle className="text-2xl font-bold text-wafr-purple-dark">Create WafR Account</CardTitle>
             <CardDescription className="text-wafr-gray">
-              Login to access the management console
+              Sign up to access the management console
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
@@ -52,6 +59,18 @@ const LoginPage = () => {
                   {error}
                 </div>
               )}
+              <div className="space-y-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="John Doe"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className="border-wafr-gray-light focus:border-wafr-purple"
+                />
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -65,12 +84,7 @@ const LoginPage = () => {
                 />
               </div>
               <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <Link to="/forgot-password" className="text-sm text-wafr-purple hover:underline">
-                    Forgot password?
-                  </Link>
-                </div>
+                <Label htmlFor="password">Password</Label>
                 <div className="relative">
                   <Input
                     id="password"
@@ -88,9 +102,17 @@ const LoginPage = () => {
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Demo credentials: agent@wafr.com / password
-                </p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  type={showPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  className="border-wafr-gray-light focus:border-wafr-purple"
+                />
               </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
@@ -99,12 +121,12 @@ const LoginPage = () => {
                 className="w-full bg-wafr-purple hover:bg-wafr-purple-dark transition-all"
                 disabled={isLoading}
               >
-                {isLoading ? 'Logging in...' : 'Login'}
+                {isLoading ? 'Creating Account...' : 'Sign Up'}
               </Button>
               <div className="text-center w-full">
-                <span className="text-sm text-wafr-gray">Don't have an account? </span>
-                <Link to="/signup" className="text-sm text-wafr-purple hover:underline">
-                  Sign up
+                <span className="text-sm text-wafr-gray">Already have an account? </span>
+                <Link to="/login" className="text-sm text-wafr-purple hover:underline">
+                  Log in
                 </Link>
               </div>
             </CardFooter>
@@ -115,4 +137,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;
