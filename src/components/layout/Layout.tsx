@@ -32,7 +32,7 @@ export const Layout = ({ children }: LayoutProps) => {
             {sidebarOpen ? (
               <>
                 <div className="flex items-center">
-                  <img src="/lovable-uploads/eb353509-dc6e-47d2-ba07-52895d491af9.png" alt="WafR Logo" className="h-8 w-8" />
+                  
                   <span className="ml-2 text-white font-bold text-xl">WafR</span>
                 </div>
                 <Button 
