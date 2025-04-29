@@ -37,8 +37,8 @@ The WafR Management Console is designed to automate internal support operations 
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/your-username/wafr-management-console.git
-   cd wafr-management-console
+   git clone[https://github.com/eayzex/wafr-agent-console-pro.git
+   cd wafr-agent-console-pro
    ```
 
 2. **Install dependencies**
@@ -92,7 +92,7 @@ Make sure you:
 ## 🧪 Future Improvements
 
 - Live PDF generation from real transaction data
-- Admin role-based routing
+- Admin role-based routing 
 - Search suggestions & phone validation
 - Dark mode toggle
 
@@ -106,5 +106,4 @@ MIT License.
 
 ---
 
-Made with ❤️ for WafR by youssef
-```
+Made by youssef
